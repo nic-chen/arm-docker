@@ -11,31 +11,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: pguyot/arm-runner-action@v2
-      with:
-        base_image: raspi_4_bullseye:20220121
-        commands: |
-          uname -a
-          whoami
+    - name: test
+      run: |
+        # Install the qemu packages
+        sudo apt-get install qemu binfmt-support qemu-user-static
 
-          # Install Docker
-          apt update
-          apt install curl -y
-          curl -sSL https://get.docker.com | sh
-          service docker start
-          sleep 10
-          service docker status
+        # This step will execute the registering scripts
+        docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
-          docker ps
-
-          # Install Docker Compose
-          LATEST_VERSION=$(curl -s https://github.com/docker/compose/releases/latest | grep -o "v[0-9]\.[0-9]*\.[0-9]*")
-          curl -L "https://github.com/docker/compose/releases/download/$LATEST_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          chmod +x /usr/local/bin/docker-compose
-
-          # Build AGW docker images
-          git clone https://github.com/m-govind/magma.git --depth 1
-          cd magma/lte/gateway/docker/
-          docker-compose build --build-arg CPU_ARCH=aarch64 --build-arg DEB_PORT=arm64
-
-
+        # Testing the emulation environment
+        docker run --rm -t arm64v8/ubuntu uname -m
