@@ -1,0 +1,23 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: test
+      run: |
+        # Install the qemu packages
+        sudo apt-get install qemu binfmt-support qemu-user-static
+
+        # This step will execute the registering scripts
+        docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+        # Testing the emulation environment
+        docker run --rm -t arm64v8/ubuntu uname -m
