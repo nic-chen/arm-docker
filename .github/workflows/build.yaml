@@ -21,7 +21,21 @@ jobs:
 
         # Testing the emulation environment
         docker run --rm -t arm64v8/ubuntu uname -m
-        
-        
-         docker run --name="opensearch" -d -p 9200:9200 -e "discovery.type=single-node" -e "plugins.security.ssl.http.enabled=false" -e "ES_JAVA_OPTS=\"-Xmx4g -Xms4g\"" opensearchproject/opensearch:1.3.7 
-        
+
+        docker run --name="opensearch" -d -p 9200:9200 -e "discovery.type=single-node" -e "plugins.security.ssl.http.enabled=false" -e "ES_JAVA_OPTS=\"-Xmx4g -Xms4g\"" opensearchproject/opensearch:1.3.7 
+
+        i=1
+        timeout=120
+        while ! curl -s 127.0.0.1:9200 >/dev/null; do
+          if [[ "$i" -gt "$timeout" ]]; then
+            echo "timeout occurred after waiting $timeout seconds"
+            docker ps
+            docker logs opensearch
+            curl 127.0.0.1:9200 -v
+            exit 1
+          fi
+          sleep 1
+          echo "waited OpenSearch for $i seconds.."
+          ((i++));
+        done
+
