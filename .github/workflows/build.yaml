@@ -24,7 +24,7 @@ jobs:
         
         # Test OpenSearch
         mkdir opensearch_data
-        
+        chmod 777 opensearch_data
         docker run --name="opensearch" -d -p 9200:9200 -v "${PWD}/opensearch_data:/usr/share/opensearch/data" -e "discovery.type=single-node" -e "plugins.security.ssl.http.enabled=false" -e "ES_JAVA_OPTS=\"-Xmx4g -Xms4g\"" opensearchproject/opensearch:1.3.7 
 
         sleep 10
