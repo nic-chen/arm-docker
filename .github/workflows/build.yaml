@@ -21,3 +21,7 @@ jobs:
 
         # Testing the emulation environment
         docker run --rm -t arm64v8/ubuntu uname -m
+        
+        
+         docker run --name="opensearch" -d -p 9200:9200 -e "discovery.type=single-node" -e "plugins.security.ssl.http.enabled=false" -e "ES_JAVA_OPTS=\"-Xmx4g -Xms4g\"" opensearchproject/opensearch:1.3.7 
+        
