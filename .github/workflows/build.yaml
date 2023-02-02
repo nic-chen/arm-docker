@@ -38,4 +38,5 @@ jobs:
           echo "waited OpenSearch for $i seconds.."
           ((i++));
         done
+        curl 127.0.0.1:9200 -v
 
