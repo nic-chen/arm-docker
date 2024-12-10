@@ -21,6 +21,13 @@ jobs:
           echo "External IP: $(curl -s ifconfig.me)"
           echo "Location: $(curl -s ipinfo.io/$(curl -s ifconfig.me)/city)"
 
+
+          curl -w " time_namelookup:  %{time_namelookup}s\n time_connect:  %{time_connect}s\n    time_appconnect:  %{time_appconnect}s\n   time_pretransfer:  %{time_pretransfer}s\n      time_redirect:  %{time_redirect}s\n time_starttransfer:  %{time_starttransfer}s\n  ----------\n         time_total:  %{time_total}s \n" -o /dev/null -s "https://static.api7.ai/uploads/2023/02/03/none-exists-test.webp?imageMogr2/thumbnail/972x642"
+
+          curl -w " time_namelookup:  %{time_namelookup}s\n time_connect:  %{time_connect}s\n    time_appconnect:  %{time_appconnect}s\n   time_pretransfer:  %{time_pretransfer}s\n      time_redirect:  %{time_redirect}s\n time_starttransfer:  %{time_starttransfer}s\n  ----------\n         time_total:  %{time_total}s \n" -o /dev/null -s "https://static.apiseven.com/uploads/2023/02/03/none-exists-test.webp?imageMogr2/thumbnail/972x642"
+
+
+
       
         # # Install the qemu packages
         # sudo apt-get install qemu binfmt-support qemu-user-static
